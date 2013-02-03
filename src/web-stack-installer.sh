@@ -148,7 +148,7 @@ main () {
 			# For OSX we assume ruby is installed by default
 			pre_install_env_osx
 		fi
-	elif [ "$OS_NAME" == "Linux"]; then
+	elif [ "$OS_NAME" == "Linux" ]; then
 			echo 'Yay, You are using Linux!!!'
 			pre_install_linux
 	fi
