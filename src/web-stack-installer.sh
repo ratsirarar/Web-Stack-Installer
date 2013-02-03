@@ -71,8 +71,13 @@ install_python_brew()
 	has_pythonbrew=`ls -la ~ | grep ".pythonbrew"`
 	if [ -z "`echo $has_pythonbrew`" ]; then
 		_install_curl_pack ~ pythonbrew "$LINK_PYTHON_BREW"
-	    echo -e "\n # Pythonbrew source: remove this when uninstalling pythonbrew" >> $SOURCE_SHELL_OSX $SOURCE_SHELL_LINUX
-		echo "[[ -s $HOME/.pythonbrew/etc/bashrc ]] && source $HOME/.pythonbrew/etc/bashrc" >> $SOURCE_SHELL_OSX $SOURCE_SHELL_LINUX
+	    echo -e "\n # Pythonbrew source: remove this when uninstalling pythonbrew \n
+        [[ -s $HOME/.pythonbrew/etc/bashrc ]] && source $HOME/.pythonbrew/etc/bashrc" >> $SOURCE_SHELL_LINUX
+        OS_NAME=`uname`
+		if [ "$OS_NAME" == "Darwin" ]; then
+			echo -e "\n # Pythonbrew source: remove this when uninstalling pythonbrew \n
+        [[ -s $HOME/.pythonbrew/etc/bashrc ]] && source $HOME/.pythonbrew/etc/bashrc" >> $SOURCE_SHELL_OSX
+		fi	
 	fi
 
 }
@@ -144,13 +149,13 @@ main () {
 	OS_NAME=`uname`
 	if [ "$OS_NAME" == "Darwin" ]; then
 		echo -e "\n Mhhh ... I see you are using your Mac!!!"	
-		if [ $choice_stack == "python" -o $choice_stack == 1 ]; then
+		if [ "$choice_stack" == "python" -o $choice_stack == 1 ]; then
 			# For OSX we assume ruby is installed by default
 			pre_install_env_osx
 		fi
 	elif [ "$OS_NAME" == "Linux" ]; then
-			echo 'Yay, You are using Linux!!!'
-		if [ $choice_stack == "python" -o $choice_stack == 1 ]; then
+		echo 'Yay, You are using Linux!!!'
+		if [ "$choice_stack" == "python" -o $choice_stack == 1 ]; then
 			pre_install_linux
 		fi
 			
