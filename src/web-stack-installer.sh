@@ -155,7 +155,7 @@ main () {
 		fi
 	elif [ "$OS_NAME" == "Linux" ]; then
 		echo 'Yay, You are using Linux!!!'
-		if [ "$choice_stack" == "python" -o $choice_stack == 1 ]; then
+		if [ "$choice_stack" == "python" -o $choice_stack -eq 1 ]; then
 			pre_install_linux
 		fi
 			
