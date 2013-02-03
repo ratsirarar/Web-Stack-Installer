@@ -102,7 +102,6 @@ _install_package () {
 		pack_inst="brew"
 	else 
 		pack_inst="sudo apt-get"
-			pre_install_linux
 	fi
 
 	for param in $@; do
