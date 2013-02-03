@@ -4,12 +4,13 @@
   What are installed for Python:
   		-- git 
 		-- pythonbrew
-		-- mongodb
 		-- sqlite3
 
   Other goodies for OSX:
   		-- brew
   		-- wget
+
+ @author Andy Ratsirarson 		
 '
 
 SOURCE_SHELL_OSX=~/.bash_profile 
@@ -20,19 +21,16 @@ NOT_FOUND="not found"
 pre_install_env_osx ()
 {
 	install_brew
-	_install_package wget git mongodb sqlite 
+	_install_package wget git sqlite 
 	install_python_brew
+	setup_virtual_env
 }
 
 pre_install_linux ()
 {
-	no_ruby=`which ruby`
-
-	if [ -z $no_ruby -o -n $(echo $no_ruby | grep "$NOT_FOUND") ]; then
-		echo "ruby not found"
-	else 
-		echo "ruby found"
-	fi
+	_install_package git-core sqlite
+	install_python_brew
+	setup_virtual_env
 }
 
 install_brew () {
@@ -40,14 +38,42 @@ install_brew () {
 	_install_curl_pack /usr/local/bin "brew" "$LINK_BREW"
 }
 
+setup_virtual_env ()
+{
+	echo -e "As for now we only support Django1.4 installation [for older version, you can manually install it]"
+	echo -e "Do you want to go ahead and setup Django in your virutal environment?[y/n]"
+	read inst_django
+	if [ $inst_django == "y" -o $inst_django == "Y"]; then
+		pythonbrew install 2.7.3
+		pythonbrew switch 2.7.3
+		echo -e "What would you name your virtual env instance?[default=django]"
+		read inst_name
+		if [ -z inst_name ];then
+			_setup_pythonbrew django
+			echo -e "Congratulation you have successfully installed django in your virtual env
+					To start activate your virtual env: pythonbrew venv use django
+					Check if django was installed correctly: pip freeze "
+		else
+			_setup_pythonbrew $inst_name
+			echo -e "Congratulation you have successfully installed django in your virtual env
+					To start activate your virtual env: pythonbrew venv use $inst_name
+					Check if django was installed correctly: pip freeze "
+
+		fi
+
+	fi
+}
+
 install_python_brew()
 {
 	LINK_PYTHON_BREW="curl -kL http://xrl.us/pythonbrewinstall | bash"
-	_install_curl_pack ~ pythonbrew "$LINK_PYTHON_BREW"
-    
-    echo -e "\n # Pythonbrew source: remove this when uninstalling pythonbrew" >> $SOURCE_SHELL_OSX
-	echo "[[ -s $HOME/.pythonbrew/etc/bashrc ]] && source $HOME/.pythonbrew/etc/bashrc" >> $SOURCE_SHELL_OSX
-
+	
+	has_pythonbrew=`ls -la ~ | grep ".pythonbrew"`
+	if [ -z "`echo $has_pythonbrew`" ]; then
+		_install_curl_pack ~ pythonbrew "$LINK_PYTHON_BREW"
+	    echo -e "\n # Pythonbrew source: remove this when uninstalling pythonbrew" >> $SOURCE_SHELL_OSX $SOURCE_SHELL_LINUX
+		echo "[[ -s $HOME/.pythonbrew/etc/bashrc ]] && source $HOME/.pythonbrew/etc/bashrc" >> $SOURCE_SHELL_OSX $SOURCE_SHELL_LINUX
+	fi
 
 }
 
@@ -57,7 +83,6 @@ _welcome () {
   What are installed for Python:
   		-- git 
 		-- pythonbrew
-		-- mongodb
 		-- sqlite3
 
   Other goodies for OSX:
@@ -83,6 +108,13 @@ _install_package () {
 	for param in $@; do
 		$pack_inst install $param
 	done
+}
+
+_setup_pythonbrew ()
+{
+	pythonbrew venv create $1
+	pythonbrew venv use $1
+	pip install django
 }
 
 # install package from web
@@ -112,7 +144,7 @@ main () {
 	OS_NAME=`uname`
 	if [ "$OS_NAME" == "Darwin" ]; then
 		echo -e "\n Mhhh ... I see you are using your Mac!!!"	
-		if [ $choice_stack == "Python" -o $choice_stack == 1 ]; then
+		if [ $choice_stack == "python" -o $choice_stack == 1 ]; then
 			# For OSX we assume ruby is installed by default
 			pre_install_env_osx
 		fi
