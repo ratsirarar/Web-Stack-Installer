@@ -1,23 +1,58 @@
 #!/bin/bash
+ 
+: 'This script is installing web stack environment for either Python or Ruby:
+  What are installed for Python:
+  		-- git 
+		-- pythonbrew
+		-- mongodb
+		-- sqlite3
 
-# This script is installing django stack environment:
-#   For OSX:
-# 	What are installed:
-# 		-- brew
-# 		-- wget 
-#       -- git
-# 		-- pythonbrew
-# 		-- mongodb
-# 		-- sqlite3
-
+  Other goodies for OSX:
+  		-- brew
+  		-- wget
+'
 # For OSX we assume ruby is installed by default
 
-SOURCE_SHELL_OSX=~/.bash_profile
+SOURCE_SHELL_OSX=~/.bash_profile 
 SOURCE_SHELL_LINUX=~/.bashrc
 
 NOT_FOUND="not found"
 
-pre_install_mac_osx ()
+main () {
+	welcome
+
+	echo -e "\n What development Stack do you want to work on Today? [Python/Ruby]
+	 \n \t 1-Python \n \t 2-Ruby"
+	read choice_stack
+
+	OS_NAME=`uname`
+	if [ "$OS_NAME" == "Darwin" ]; then
+		echo -e "\n Mhhh ... I see you are using your Mac!!!"	
+		if [ $choice_stack == "Django" -o $choice_stack == 1 ]; then
+			pre_install_django_env_osx
+		fi
+	elif [ "$OS_NAME" == "Linux"]; then
+			echo 'Yay, You are using Linux!!!'
+			pre_install_linux
+	fi
+}
+
+welcome () {
+	echo -e "\n Welcome to Web Stack Installer"
+	echo -e "\n This script is installing web stack environment for either Python or Ruby:
+  What are installed for Python:
+  		-- git 
+		-- pythonbrew
+		-- mongodb
+		-- sqlite3
+
+  Other goodies for OSX:
+  		-- brew
+  		-- wget
+"
+}
+
+pre_install_django_env_osx ()
 {
 	install_brew
 	install_package wget git mongodb sqlite 
@@ -70,14 +105,4 @@ thank_you()
 	echo -e "\n Thank you for using Web Stack installer!!"
 }
 
-OS_NAME=`uname`
-
-if [ "$OS_NAME" == "Darwin" ]; then
-	echo 'Getting fancy with your Mac'
-	pre_install_mac_osx
-	
-else 
-	echo ''
-fi
-
-
+main
