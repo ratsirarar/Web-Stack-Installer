@@ -43,7 +43,7 @@ setup_virtual_env ()
 	echo -e "As for now we only support Django1.4 installation [for older version, you can manually install it]"
 	echo -e "Do you want to go ahead and setup Django in your virutal environment?[y/n]"
 	read inst_django
-	if [ $inst_django == "y" -o $inst_django == "Y"]; then
+	if [ $inst_django == "y" -o $inst_django == "Y" ]; then
 		pythonbrew install 2.7.3
 		pythonbrew switch 2.7.3
 		echo -e "What would you name your virtual env instance?[default=django]"
