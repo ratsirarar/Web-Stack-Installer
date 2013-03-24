@@ -149,13 +149,13 @@ main () {
 	OS_NAME=`uname`
 	if [ "$OS_NAME" == "Darwin" ]; then
 		echo -e "\n Mhhh ... I see you are using your Mac!!!"	
-		if [ "$choice_stack" == "python" -o $choice_stack == 1 ]; then
+		if [ "$choice_stack" == "python" -o "$choice_stack" == "1" ]; then
 			# For OSX we assume ruby is installed by default
 			pre_install_env_osx
 		fi
 	elif [ "$OS_NAME" == "Linux" ]; then
 		echo 'Yay, You are using Linux!!!'
-		if [ "$choice_stack" == "python" -o $choice_stack -eq 1 ]; then
+		if [ "$choice_stack" == "python" -o "$choice_stack" == "1" ]; then
 			pre_install_linux
 		fi
 			
