@@ -77,7 +77,9 @@ install_python_brew()
 		if [ "$OS_NAME" == "Darwin" ]; then
 			echo -e "\n # Pythonbrew source: remove this when uninstalling pythonbrew \n
         [[ -s $HOME/.pythonbrew/etc/bashrc ]] && source $HOME/.pythonbrew/etc/bashrc" >> $SOURCE_SHELL_OSX
-		fi	
+        `source` $SOURCE_SHELL_OSX
+		fi			
+		`source` $SOURCE_SHELL_LINUX
 	fi
 
 }
