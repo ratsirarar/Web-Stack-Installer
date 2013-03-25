@@ -10,7 +10,7 @@ Getting started with Web-Stack-installer:
 
 Install web-stack-installer: 
 ```
-$ curl https://raw.github.com/ratsirarar/Web-Stack-Installer/dev/src/web-stack-installer.sh | bash
+bash <(curl https://raw.github.com/ratsirarar/Web-Stack-Installer/dev/src/web-stack-installer.sh)
 ```
 
 What is Installed:
